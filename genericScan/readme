@@ -1,0 +1,14 @@
+to make the executable
+
+>  g++ *.c -o test
+
+
+to run the executable
+
+> test 
+
+
+or 
+
+> test 20
+
