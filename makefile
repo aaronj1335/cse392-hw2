@@ -15,6 +15,7 @@ INPUTS_TMP = $(subst $(SRC_DIR),$(OBJECTS_DIR),$(INPUTS))
 OBJECTS = $(INPUTS_TMP:%.cc=%.o)
 DEPFILES = $(OBJECTS:%.o=%.d)
 
+
 # main application
 all: $(TARGET)
 
@@ -30,9 +31,17 @@ $(OBJECTS_DIR)/%.d: $(SRC_DIR)/%.cc | $(OBJECTS_DIR)
 $(OBJECTS_DIR):
 	mkdir $(OBJECTS_DIR)
 
+
+# running, testing, etc
+
+run: all
+	./$(TARGET)
+
 -include $(DEPFILES)
 
+
 # cleanup
+
 .PHONY: clean
 clean:
 	-rm -rf $(OBJECTS_DIR) $(TARGET)
