@@ -37,6 +37,9 @@ $(OBJECTS_DIR):
 run: all
 	./$(TARGET)
 
+test: all
+	@test/test
+
 -include $(DEPFILES)
 
 

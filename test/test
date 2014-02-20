@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for f in test/fixtures/in/*; do
+  cat $f | ./$(basename `pwd`) | diff $(echo $f | sed 's/in/out/') -
+done
