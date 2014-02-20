@@ -1,3 +1,4 @@
+#include <getopt.h>
 #include <iostream>
 #include <iterator>
 #include <vector>
@@ -7,13 +8,34 @@
 
 using namespace std;
 
-int main() {
-  istream_iterator<int> start(cin), end;
-  vector<int> numbers(start, end);
+int main(int argc, char* argv[]) {
+  unsigned int dim = 1;
+  int opt;
 
-  parScan((void*) &numbers[0], numbers.size(), sizeof numbers[0], addition);
+  while ((opt = getopt(argc, argv, "d:")) != -1) {
+    switch (opt) {
+      case 'd':
+        dim = atoi(optarg);
+        break;
+      default: /* '?' */
+        cerr << "USAGE: " << argv[0] << " [-d dimensionality]" << endl;
+        exit(EXIT_FAILURE);
+    }
+  }
 
-  copy(numbers.begin(), numbers.end(), ostream_iterator<int>(cout, "\n"));
+  istream_iterator<double> start(cin), end;
+  vector<double> nums(start, end);
+
+  parScan((void*) &nums[0], nums.size() / dim, sizeof nums[0] * dim,
+      addition(dim));
+
+  for (vector<double>::size_type i = 0; i != nums.size(); ++i) {
+    cout << nums[i];
+    if (i % dim == dim - 1)
+      cout << endl;
+    else
+      cout << ' ';
+  }
 
   return 0;
 }

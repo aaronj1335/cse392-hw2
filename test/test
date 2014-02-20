@@ -1,18 +1,20 @@
 #!/bin/bash
 
 executable="./$(basename `pwd`)"
-cases=`find test/fixtures/in/* -exec basename {} .txt \;`
+inputs=`find test/fixtures/**/in -iname '*txt'`
 
 tst() {
-  cat test/fixtures/in/$1.txt \
-    | $executable \
-    | diff $(echo test/fixtures/out/$1.txt) -
+  cat test/fixtures/${2}d/in/$1.txt \
+    | $executable -d $2 \
+    | diff $(echo test/fixtures/${2}d/out/$1.txt) -
 }
 
 if [ $1 ]; then
-  tst $1
+  tst $1 $2
 else
-  for test_case in $cases; do
-    tst $test_case
+  for input in $inputs; do
+    num=`basename $input .txt`
+    dim=`echo $input | cut -d/ -f3 | sed 's/d//'`
+    tst $num $dim
   done
 fi
