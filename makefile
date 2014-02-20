@@ -1,10 +1,14 @@
-CC = g++-4.8
+CC = g++
 FLAGS = -Wall -Werror
 LIBRARIES = -fopenmp
 TARGET = $(shell basename `pwd`)
 
 ifeq ($(DEBUG), 1)
 	override FLAGS += -O0 -g
+endif
+
+ifeq ($(shell uname), Darwin)
+	override CC = g++-4.8
 endif
 
 SRC_DIR = src
