@@ -39,7 +39,7 @@ void parScan(void *X, unsigned int n, size_t l, t_op op, unsigned int stride) {
   if (stride >= nextN) return;
 
   #pragma omp parallel for
-    for (unsigned int i = stride - 1; i < nextN; i += stride * 2)
+    for (int i = stride - 1; (unsigned) i < nextN; i += stride * 2)
       if (i + stride < n)
         op((void*) (c + (i + stride) * l), (void*) (c + i * l));
 
@@ -47,7 +47,7 @@ void parScan(void *X, unsigned int n, size_t l, t_op op, unsigned int stride) {
 
   if (stride > 1)
     #pragma omp parallel for
-      for (unsigned int i  = stride - 1; i < nextN - stride; i += stride)
+      for (int i  = stride - 1; (unsigned) i < nextN - stride; i += stride)
         if (i + stride / 2 < n)
           op((void*) (c + (i + stride / 2) * l), (void*) (c + i * l));
 }
