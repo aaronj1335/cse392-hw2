@@ -8,13 +8,16 @@ ifeq ($(DEBUG), 1)
 endif
 
 SRC_DIR = src
-OBJECTS_DIR = obj
+OBJ_DIR = obj
+VAR_DIR = var
+RESULTS_DIR = results
 
 INPUTS = $(wildcard $(SRC_DIR)/*.cc)
-INPUTS_TMP = $(subst $(SRC_DIR),$(OBJECTS_DIR),$(INPUTS))
+INPUTS_TMP = $(subst $(SRC_DIR),$(OBJ_DIR),$(INPUTS))
 OBJECTS = $(INPUTS_TMP:%.cc=%.o)
 DEPFILES = $(OBJECTS:%.o=%.d)
 
+PERF_FILES = $(VAR_DIR)/1d.txt $(VAR_DIR)/4d.txt
 
 # main application
 all: $(TARGET)
@@ -22,14 +25,14 @@ all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(CC) $(FLAGS) $(LIBRARIES) -o $@ $(OBJECTS)
 
-$(OBJECTS_DIR)/%.o: $(SRC_DIR)/%.cc | $(OBJECTS_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc | $(OBJ_DIR)
 	$(CC) $(FLAGS) $(LIBRARIES) -c -o $@ $<
 
-$(OBJECTS_DIR)/%.d: $(SRC_DIR)/%.cc | $(OBJECTS_DIR)
+$(OBJ_DIR)/%.d: $(SRC_DIR)/%.cc | $(OBJ_DIR)
 	$(CC) $(FLAGS) $(LIBRARIES) -M -MF $@ -MT $(@:%.d=%.o) $<
 
-$(OBJECTS_DIR):
-	mkdir $(OBJECTS_DIR)
+$(OBJ_DIR):
+	mkdir $(OBJ_DIR)
 
 
 # running, testing, etc
@@ -40,6 +43,24 @@ run: all
 test: all
 	@test/test
 
+$(VAR_DIR):
+	mkdir $@
+
+$(VAR_DIR)/1d.txt: $(VAR_DIR)
+	@python test/perfdata.py 1 > $@
+
+$(VAR_DIR)/4d.txt: $(VAR_DIR)
+	@python test/perfdata.py 4 > $@
+
+perfdata: $(PERF_FILES)
+
+$(RESULTS_DIR):
+	mkdir $@
+
+perf: perfdata all | $(RESULTS_DIR)
+	cat var/1d.txt | ./$(TARGET) -n 3>$(RESULTS_DIR)/1d.txt 1>/dev/null
+	cat var/4d.txt | ./$(TARGET) -nd 4 3>$(RESULTS_DIR)/4d.txt 1>/dev/null
+
 -include $(DEPFILES)
 
 
@@ -47,5 +68,5 @@ test: all
 
 .PHONY: clean
 clean:
-	-rm -rf $(OBJECTS_DIR) $(TARGET)
+	-rm -rf $(OBJ_DIR) $(VAR_DIR) $(TARGET)
 
