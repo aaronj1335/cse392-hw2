@@ -15,23 +15,36 @@ int main(int argc, char* argv[]) {
   unsigned int dim = 1;
   int opt;
   bool output = true;
+  int mockSize = 0;
+  istream_iterator<double> start, end;
+  vector<double> nums;
 
-  while ((opt = getopt(argc, argv, "nd:")) != -1) {
+  while ((opt = getopt(argc, argv, "nd:m:")) != -1) {
     switch (opt) {
-      case 'n':
+      case 'n': // no output
         output = false;
         break;
       case 'd':
         dim = atoi(optarg);
         break;
+      case 'm': // mock input, requires the number of megabytes
+        mockSize = atoi(optarg);
+        break;
       default: /* '?' */
-        cerr << "USAGE: " << argv[0] << " [-d dimensionality]" << endl;
+        cerr << "USAGE: " << argv[0]
+          << " [-d dimensionality]"
+          << " [-n]"
+          << endl;
         exit(EXIT_FAILURE);
     }
   }
 
-  istream_iterator<double> start(cin), end;
-  vector<double> nums(start, end);
+  if (mockSize) {
+    nums = vector<double>(mockSize * dim * (1 << 20));
+  } else {
+    start = istream_iterator<double>(cin);
+    nums = vector<double>(start, end);
+  }
 
   clock_t startTime = clock();
   parScan((void*) &nums[0], nums.size() / dim, sizeof nums[0] * dim,
