@@ -13,7 +13,8 @@ endif
 
 SRC_DIR = src
 OBJ_DIR = obj
-VAR_DIR = var
+SCRATCH ?= .
+VAR_DIR = $(SCRATCH)/var
 RESULTS_DIR = results
 
 INPUTS = $(wildcard $(SRC_DIR)/*.cc)
