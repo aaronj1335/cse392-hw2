@@ -1,5 +1,18 @@
 #!/bin/bash
 
-for f in test/fixtures/in/*; do
-  cat $f | ./$(basename `pwd`) | diff $(echo $f | sed 's/in/out/') -
-done
+executable="./$(basename `pwd`)"
+cases=`find test/fixtures/in/* -exec basename {} .txt \;`
+
+tst() {
+  cat test/fixtures/in/$1.txt \
+    | $executable \
+    | diff $(echo test/fixtures/out/$1.txt) -
+}
+
+if [ $1 ]; then
+  tst $1
+else
+  for test_case in $cases; do
+    tst $test_case
+  done
+fi
