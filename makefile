@@ -60,14 +60,16 @@ $(VAR_DIR)/1d.txt: $(VAR_DIR)
 $(VAR_DIR)/4d.txt: $(VAR_DIR)
 	@python test/perfdata.py 4 > $@
 
+# this is not used b/c it was slow and when doing perf we could care less about
+# the actual values
 perfdata: $(PERF_FILES)
 
 $(RESULTS_DIR):
 	mkdir $@
 
-perf: perfdata all | $(RESULTS_DIR)
-	cat var/1d.txt | ./$(Q2_TARGET) -n 3>$(RESULTS_DIR)/1d.txt 1>/dev/null
-	cat var/4d.txt | ./$(Q2_TARGET) -nd 4 3>$(RESULTS_DIR)/4d.txt 1>/dev/null
+perf: all | $(RESULTS_DIR)
+	time ./$(Q2_TARGET) -nm 300 3>$(RESULTS_DIR)/1d.txt 1>/dev/null
+	time ./$(Q2_TARGET) -nm 300 -d 4 3>$(RESULTS_DIR)/4d.txt 1>/dev/null
 
 -include $(DEPFILES)
 
