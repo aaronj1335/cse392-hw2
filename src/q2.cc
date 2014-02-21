@@ -12,6 +12,23 @@
 
 using namespace std;
 
+/** driver routine
+ *
+ * we're supposed to write this for the assignment, though i don't understand
+ * why we need it.
+ */
+void scan(unsigned int size) {
+  vector<double>* nums = new vector<double>(size);
+  for (unsigned int i = 0; i < nums->size(); i++) {
+    (*nums)[i] = rand();
+  }
+  parScan((void*) nums,
+          nums->size(),
+          sizeof (*nums)[0],
+          addition(1));
+  delete nums;
+}
+
 int main(int argc, char* argv[]) {
   unsigned int dim = 1;
   int opt;
