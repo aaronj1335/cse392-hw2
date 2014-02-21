@@ -47,8 +47,10 @@ int main(int argc, char* argv[]) {
   }
 
   clock_t startTime = clock();
-  parScan((void*) &nums[0], nums.size() / dim, sizeof nums[0] * dim,
-      addition(dim));
+  parScan((void*) &nums[0],
+          nums.size() / dim,
+          sizeof nums[0] * dim,
+          addition(dim));
   clock_t endTime = clock();
 
   // check if fd #3 is open, if so, write the processor time taken in seconds
@@ -56,7 +58,7 @@ int main(int argc, char* argv[]) {
   if (errno != EBADF) {
     FILE* timeOut = fdopen(3, "w");
     fprintf(timeOut, "%f",
-        ((double)endTime - (double)startTime) / (double)CLOCKS_PER_SEC);
+        ((double) endTime - (double) startTime) / (double) CLOCKS_PER_SEC);
   }
 
   if (output) {
