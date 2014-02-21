@@ -68,8 +68,12 @@ $(RESULTS_DIR):
 	mkdir $@
 
 perf: all | $(RESULTS_DIR)
-	time ./$(Q2_TARGET) -nm 300 3>$(RESULTS_DIR)/1d.txt 1>/dev/null
-	time ./$(Q2_TARGET) -nm 300 -d 4 3>$(RESULTS_DIR)/4d.txt 1>/dev/null
+	time ./$(Q2_TARGET) -nm 1        1>/dev/null 3>$(RESULTS_DIR)/1d_0001M.txt
+	time ./$(Q2_TARGET) -nm 10       1>/dev/null 3>$(RESULTS_DIR)/1d_0010M.txt
+	time ./$(Q2_TARGET) -nm 100      1>/dev/null 3>$(RESULTS_DIR)/1d_0100M.txt
+	time ./$(Q2_TARGET) -nm 300      1>/dev/null 3>$(RESULTS_DIR)/1d_0300M.txt
+	time ./$(Q2_TARGET) -nm 1000     1>/dev/null 3>$(RESULTS_DIR)/1d_1000M.txt
+	time ./$(Q2_TARGET) -nm 300 -d 4 1>/dev/null 3>$(RESULTS_DIR)/4d_0300M.txt
 
 -include $(DEPFILES)
 
