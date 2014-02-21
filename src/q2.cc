@@ -1,13 +1,12 @@
 #include <errno.h>
-#include <stdio.h>
 #include <getopt.h>
+#include <sys/time.h>
+
 #include <iostream>
 #include <iterator>
 #include <vector>
 #include <algorithm>
 #include <ctime>
-
-#include <string.h>
 
 #include "scan.h"
 
@@ -48,19 +47,23 @@ int main(int argc, char* argv[]) {
     nums = vector<double>(start, end);
   }
 
-  clock_t startTime = clock();
+  struct timeval wallClockStart, wallClockFinish;
+  double wallClockElapsed;
+  gettimeofday(&wallClockStart, NULL);
   parScan((void*) &nums[0],
           nums.size() / dim,
           sizeof nums[0] * dim,
           addition(dim));
-  clock_t endTime = clock();
+  gettimeofday(&wallClockFinish, NULL);
+  wallClockElapsed =
+    ((wallClockFinish.tv_sec  - wallClockStart.tv_sec) * 1000000u +
+     wallClockFinish.tv_usec - wallClockStart.tv_usec) / 1.e6;
 
   // check if fd #3 is open, if so, write the processor time taken in seconds
   lseek(3, 0, SEEK_CUR);
   if (errno != EBADF && errno != ESPIPE) {
     FILE* timeOut = fdopen(3, "w");
-    fprintf(timeOut, "%f",
-        ((double) endTime - (double) startTime) / (double) CLOCKS_PER_SEC);
+    fprintf(timeOut, "wall_clock_sec: %f\n", wallClockElapsed);
   }
 
   if (output) {
