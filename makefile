@@ -1,7 +1,7 @@
 CC = g++
 FLAGS = -Wall -Werror
 LIBRARIES = -fopenmp
-TARGET = $(shell basename `pwd`)
+Q2_TARGET = q2
 
 ifeq ($(DEBUG), 1)
 	override FLAGS += -O0 -g
@@ -25,9 +25,9 @@ DEPFILES = $(OBJECTS:%.o=%.d)
 PERF_FILES = $(VAR_DIR)/1d.txt $(VAR_DIR)/4d.txt
 
 # main application
-all: $(TARGET)
+all: $(Q2_TARGET)
 
-$(TARGET): $(OBJECTS)
+$(Q2_TARGET): $(OBJECTS)
 	$(CC) $(FLAGS) $(LIBRARIES) -o $@ $(OBJECTS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc | $(OBJ_DIR)
@@ -41,9 +41,6 @@ $(OBJ_DIR):
 
 
 # running, testing, etc
-
-run: all
-	./$(TARGET)
 
 test: all
 	@test/test
@@ -63,8 +60,8 @@ $(RESULTS_DIR):
 	mkdir $@
 
 perf: perfdata all | $(RESULTS_DIR)
-	cat var/1d.txt | ./$(TARGET) -n 3>$(RESULTS_DIR)/1d.txt 1>/dev/null
-	cat var/4d.txt | ./$(TARGET) -nd 4 3>$(RESULTS_DIR)/4d.txt 1>/dev/null
+	cat var/1d.txt | ./$(Q2_TARGET) -n 3>$(RESULTS_DIR)/1d.txt 1>/dev/null
+	cat var/4d.txt | ./$(Q2_TARGET) -nd 4 3>$(RESULTS_DIR)/4d.txt 1>/dev/null
 
 -include $(DEPFILES)
 
@@ -73,5 +70,5 @@ perf: perfdata all | $(RESULTS_DIR)
 
 .PHONY: clean
 clean:
-	-rm -rf $(OBJ_DIR) $(VAR_DIR) $(TARGET)
+	-rm -rf $(OBJ_DIR) $(VAR_DIR) $(Q2_TARGET)
 

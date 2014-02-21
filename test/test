@@ -1,6 +1,6 @@
 #!/bin/bash
 
-executable="./$(basename `pwd`)"
+executable="./q2"
 inputs=`find test/fixtures/**/in -iname '*txt'`
 
 tst() {
