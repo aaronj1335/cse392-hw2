@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <ctime>
 
+#include <string.h>
+
 #include "scan.h"
 
 using namespace std;
@@ -55,7 +57,7 @@ int main(int argc, char* argv[]) {
 
   // check if fd #3 is open, if so, write the processor time taken in seconds
   lseek(3, 0, SEEK_CUR);
-  if (errno != EBADF) {
+  if (errno != EBADF && errno != ESPIPE) {
     FILE* timeOut = fdopen(3, "w");
     fprintf(timeOut, "%f",
         ((double) endTime - (double) startTime) / (double) CLOCKS_PER_SEC);
