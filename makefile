@@ -27,7 +27,11 @@ DEPFILES = $(OBJECTS:%.o=%.d)
 
 PERF_FILES = $(VAR_DIR)/1d.txt $(VAR_DIR)/4d.txt
 
+REPORT_HTML = report/report.html
+REPORT_SRC = report/report.md
+
 # main application
+
 all: $(Q2_TARGET) $(Q3_TARGET)
 
 $(Q2_TARGET): $(Q2_OBJECTS)
@@ -75,12 +79,19 @@ perf: all | $(RESULTS_DIR)
 	time ./$(Q2_TARGET) -nm 1000     1>/dev/null 3>$(RESULTS_DIR)/1d_1000M.txt
 	time ./$(Q2_TARGET) -nm 300 -d 4 1>/dev/null 3>$(RESULTS_DIR)/4d_0300M.txt
 
--include $(DEPFILES)
 
+# report
+
+report: $(REPORT_HTML)
+
+$(REPORT_HTML): $(REPORT_SRC) etc/template.html etc/marked.js etc/mathjax.js
+	python etc/buildreport.py < $< > $@
 
 # cleanup
 
 .PHONY: clean
 clean:
 	-rm -rf $(OBJ_DIR) $(VAR_DIR) $(Q2_TARGET)
+
+-include $(DEPFILES)
 
