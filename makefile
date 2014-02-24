@@ -84,7 +84,7 @@ perf: all | $(RESULTS_DIR)
 
 report: $(REPORT_HTML)
 
-$(REPORT_HTML): $(REPORT_SRC) etc/template.html etc/marked.js etc/mathjax.js
+$(REPORT_HTML): $(REPORT_SRC) etc/template.html etc/marked.js
 	python etc/buildreport.py < $< > $@
 
 # cleanup

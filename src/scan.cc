@@ -34,6 +34,7 @@ void seqScan(void *X, unsigned int n, size_t l, t_op op) {
 
 void parScan(void *X, unsigned int n, size_t l, t_op op, unsigned int stride) {
   char* c = (char*) X;
+  // is there a more performant way to do this?
   unsigned int nextN = nextPowerOf2(n);
 
   if (stride >= nextN) return;
@@ -47,7 +48,7 @@ void parScan(void *X, unsigned int n, size_t l, t_op op, unsigned int stride) {
 
   if (stride > 1)
     #pragma omp parallel for
-      for (int i  = stride - 1; (unsigned) i < nextN - stride; i += stride)
+      for (int i = stride - 1; (unsigned) i < nextN - stride; i += stride)
         if (i + stride / 2 < n)
           op((void*) (c + (i + stride / 2) * l), (void*) (c + i * l));
 }

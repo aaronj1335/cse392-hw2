@@ -5,6 +5,5 @@ import sys
 if __name__ == '__main__':
     sys.stdout.write(open('etc/template.html').read() % {
         'marked': open('etc/marked.js').read(),
-        'mathjax': open('etc/mathjax.js').read(),
         'report': sys.stdin.read(),
         })
