@@ -86,5 +86,39 @@
             a(i+stride/2) = a(i) + a(i+stride/2)
           end
 
+3. TODO
+
+4. PRAM pseudocode:
+
+        function c = parallel_merge(a, n, b, m, p, tid)
+        % allocate space for result and splitters. could optimize by assigning
+        % each allocation to a different thread
+        % assume merge() is a sequential merge
+        if tid == 0
+          c = zeros(n + m)
+          aSplitters = zeros(n/p)
+          bSplitters = zeros(n/p)
+        end
+
+        % part 1: ranking, O(logn)
+        as = rank(a(tid*n/p), b) % CW
+        bs = rank(b(tid*m/p), a) % CW
+        aSplitters(tid) = as
+        bSplitters(tid) = bs
+
+        % part 2: parallel merge, O(n/p)
+        if tid == 0
+          c(0:as+bs) = merge(a(0, as), as, b(0, bs), bs)
+        else
+          prevAs = aSplitters(tid - 1)
+          prevBs = bSplitters(tid - 1)
+          c(prevAs+prevBs:as+bs) = merge(a(prevAs, as), as-prevAs,
+                                         b(prevBs, bs), bs-prevBs)
+        end
+        if tid == p-1
+          c(as+bs:m+n) = merge(a(as:n), n-as, b(bs:m), m-bs)
+        end
+
+5. TODO
 [scan.cc]: https://github.com/aaronj1335/cse392-hw2/blob/master/src/scan.cc#L35
 [prefixsum]: http://en.wikipedia.org/wiki/Prefix_sum
