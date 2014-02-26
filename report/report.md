@@ -119,6 +119,41 @@
           c(as+bs:m+n) = merge(a(as:n), n-as, b(bs:m), m-bs)
         end
 
-5. TODO
+5. A parallel version of the [quickselect][] algorithm:
+
+        function m = parallel_median(a, n, below=0, above=0)
+        % this is the count of array items below and above the current
+        % partition. the `below` and `above` parameters are just used when
+        % recursing to keep track of where the current partition is in the
+        % array
+        pivot = a(n/2)
+        greater_than_pivot = zeros(n-below-above) % allocation O(n)
+        parfor i = below:n-above
+          greater_than_pivot(i) = a(i) < n
+        end
+        count = parallel_sum(a, n) % reduction w/ addition
+        if below + count == n/2
+          m = a(count)
+        else if below + count > n/2
+          m = parallel_median(a, n, below, above+n-count)
+        else
+          m = parallel_median(a, n, below+n-count, above)
+        end
+
+  Similarly to sequential versions of quicksort and quickselect, the average
+  running time is much better than the worst-case, so we've reported $\theta$
+  times below instead of upper bounds.
+
+  $$\begin{align}
+  W(n) & = \theta\left(n + \log{n} + W\left(\frac{n}{2}\right)\right) \\\\
+  & = \theta(n)
+  \\\\
+  D(n) & = \theta\left(\log{n} + D\left(\frac{n}{2}\right)\right) \\\\
+  & = \theta(\log{n})
+  \end{align}$$
+
+  This algorithm is work-optimal in the average case.
+
 [scan.cc]: https://github.com/aaronj1335/cse392-hw2/blob/master/src/scan.cc#L35
 [prefixsum]: http://en.wikipedia.org/wiki/Prefix_sum
+[quickselect]: http://en.wikipedia.org/wiki/Quickselect
