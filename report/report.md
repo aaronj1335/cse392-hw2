@@ -86,6 +86,57 @@
             a(i+stride/2) = a(i) + a(i+stride/2)
           end
 
+    Results for time in seconds are below.
+
+    <table>
+      <thead>
+        <tr>
+          <th>Problem Size</th>
+          <th>Single Core</th>
+          <th>Single Socket</th>
+          <th>Single Node</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1m</td>
+          <td>0.047790</td>
+          <td>0.014720</td>
+          <td>0.019102</td>
+        </tr>
+        <tr>
+          <td>10m</td>
+          <td>0.580920</td>
+          <td>0.166679</td>
+          <td>0.117725</td>
+        </tr>
+        <tr>
+          <td>100m</td>
+          <td>2.790022</td>
+          <td>1.029475</td>
+          <td>0.823568</td>
+        </tr>
+        <tr>
+          <td>300m</td>
+          <td>9.211940</td>
+          <td>3.697637</td>
+          <td>2.951852</td>
+        </tr>
+        <tr>
+          <td>1b</td>
+          <td>29.877337</td>
+          <td>7.312807</td>
+          <td>6.025247</td>
+        </tr>
+        <tr>
+          <td>300m 4D</td>
+          <td>22.078455</td>
+          <td>8.007848</td>
+          <td>7.067054</td>
+        </tr>
+      </tbody>
+    </table>
+
 3. TODO
 
 4. PRAM pseudocode:
