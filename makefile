@@ -96,6 +96,17 @@ report: $(REPORT_HTML)
 $(REPORT_HTML): $(REPORT_SRC) etc/template.html etc/marked.js
 	python etc/buildreport.py < $< > $@
 
+
+# submission -- abhi you'll need to update this accordingly
+
+zip: clean
+	rm -rf ../groupstacy || true
+	mkdir ../groupstacy
+	cp -r ./ ../groupstacy/
+	rm -rf ../groupstacy/.git
+	(cd ../ && zip -r groupstacyaaronhwk2.zip groupstacy )
+	rm -rf ../groupstacy
+
 # cleanup
 
 .PHONY: clean
