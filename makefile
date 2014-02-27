@@ -1,15 +1,16 @@
 CC = g++
 FLAGS = -Wall -Werror
 LIBRARIES = -fopenmp
+IBRUN = ibrun
 Q2_TARGET = q2
 Q3_TARGET = q3
 
-ifeq ($(DEBUG), 1)
-	override FLAGS += -O0 -g
+ifeq ($(shell ibrun 2>/dev/null), )
+	IBRUN =
 endif
 
 ifeq ($(shell uname), Darwin)
-	override CC = g++-4.8
+	CC = g++-4.8
 endif
 
 SRC_DIR = src
@@ -72,12 +73,12 @@ $(RESULTS_DIR):
 	mkdir $@
 
 perf: all | $(RESULTS_DIR)
-	time ./$(Q2_TARGET) -nm 1        1>/dev/null 3>$(RESULTS_DIR)/1d_0001M.txt
-	time ./$(Q2_TARGET) -nm 10       1>/dev/null 3>$(RESULTS_DIR)/1d_0010M.txt
-	time ./$(Q2_TARGET) -nm 100      1>/dev/null 3>$(RESULTS_DIR)/1d_0100M.txt
-	time ./$(Q2_TARGET) -nm 300      1>/dev/null 3>$(RESULTS_DIR)/1d_0300M.txt
-	time ./$(Q2_TARGET) -nm 1000     1>/dev/null 3>$(RESULTS_DIR)/1d_1000M.txt
-	time ./$(Q2_TARGET) -nm 300 -d 4 1>/dev/null 3>$(RESULTS_DIR)/4d_0300M.txt
+	time $(IBRUN) ./$(Q2_TARGET) -nm 1        1>/dev/null 3>$(RESULTS_DIR)/1d_0001M.txt
+	time $(IBRUN) ./$(Q2_TARGET) -nm 10       1>/dev/null 3>$(RESULTS_DIR)/1d_0010M.txt
+	time $(IBRUN) ./$(Q2_TARGET) -nm 100      1>/dev/null 3>$(RESULTS_DIR)/1d_0100M.txt
+	time $(IBRUN) ./$(Q2_TARGET) -nm 300      1>/dev/null 3>$(RESULTS_DIR)/1d_0300M.txt
+	time $(IBRUN) ./$(Q2_TARGET) -nm 1000     1>/dev/null 3>$(RESULTS_DIR)/1d_1000M.txt
+	time $(IBRUN) ./$(Q2_TARGET) -nm 300 -d 4 1>/dev/null 3>$(RESULTS_DIR)/4d_0300M.txt
 
 
 # report
