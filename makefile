@@ -12,7 +12,6 @@ SRC_DIR = src
 OBJ_DIR = obj
 SCRATCH ?= .
 VAR_DIR = $(SCRATCH)/var
-RESULTS_DIR = results
 
 INPUTS = $(wildcard $(SRC_DIR)/*.cc)
 INPUTS_TMP = $(subst $(SRC_DIR),$(OBJ_DIR),$(INPUTS))
@@ -22,6 +21,20 @@ Q3_OBJECTS = $(filter-out $(OBJ_DIR)/$(Q2_TARGET).o,$(OBJECTS))
 DEPFILES = $(OBJECTS:%.o=%.d)
 
 PERF_FILES = $(VAR_DIR)/1d.txt $(VAR_DIR)/4d.txt
+PERF_SUBDIR = default
+RESULTS_DIR = results/$(PERF_SUBDIR)
+
+ifeq ($(OMP_NUM_THREADS), 1)
+	PERF_SUBDIR = core
+endif
+
+ifeq ($(OMP_NUM_THREADS), 6)
+	PERF_SUBDIR = socket
+endif
+
+ifeq ($(OMP_NUM_THREADS), 12)
+	PERF_SUBDIR = node
+endif
 
 REPORT_HTML = report/report.html
 REPORT_SRC = report/report.md
@@ -65,7 +78,7 @@ $(VAR_DIR)/4d.txt: $(VAR_DIR)
 perfdata: $(PERF_FILES)
 
 $(RESULTS_DIR):
-	mkdir $@
+	mkdir -p $@
 
 perf: all | $(RESULTS_DIR)
 	time ./$(Q2_TARGET) -nm 1        1>/dev/null 3>$(RESULTS_DIR)/1d_0001M.txt
