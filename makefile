@@ -88,6 +88,11 @@ perf: all | $(RESULTS_DIR)
 	time ./$(Q2_TARGET) -nm 1000     1>/dev/null 3>$(RESULTS_DIR)/1d_1000M.txt
 	time ./$(Q2_TARGET) -nm 300 -d 4 1>/dev/null 3>$(RESULTS_DIR)/4d_0300M.txt
 
+scaling: all | $(RESULTS_DIR)
+	time ./$(Q2_TARGET) -nm 10       1>/dev/null 3>$(RESULTS_DIR)/1d_0010M.txt
+	time ./$(Q2_TARGET) -nm 60       1>/dev/null 3>$(RESULTS_DIR)/1d_0060M.txt
+	time ./$(Q2_TARGET) -nm 120      1>/dev/null 3>$(RESULTS_DIR)/1d_0120M.txt
+
 
 # report
 
