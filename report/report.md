@@ -137,6 +137,11 @@
       </tbody>
     </table>
 
+    <p class=clearfix>
+      <img class=chart src=strong_scaling.png />
+      <img class=chart src=weak_scaling.png />
+    </p>
+
 3. TODO
 
 4. PRAM pseudocode:
