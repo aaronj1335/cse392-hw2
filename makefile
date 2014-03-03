@@ -106,12 +106,12 @@ $(REPORT_HTML): $(REPORT_SRC) etc/template.html etc/marked.js
 # submission -- abhi you'll need to update this accordingly
 
 zip: clean
-	rm -rf ../groupstacy || true
-	mkdir ../groupstacy
-	cp -r ./ ../groupstacy/
-	rm -rf ../groupstacy/.git
-	(cd ../ && zip -r groupstacyaaronhwk2.zip groupstacy )
-	rm -rf ../groupstacy
+	rm -rf ../cse392asab_stacy || true
+	mkdir ../cse392asab_stacy
+	cp -r ./ ../cse392asab_stacy/
+	rm -rf ../cse392asab_stacy/.git
+	(cd ../ && zip -r cse392asab_stacy_aaron.zip cse392asab_stacy )
+	rm -rf ../cse392asab_stacy
 
 # cleanup
 
