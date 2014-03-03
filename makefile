@@ -1,4 +1,5 @@
 CC = g++
+GCC = gcc
 FLAGS = -Wall -Werror
 LIBRARIES = -fopenmp
 Q2_TARGET = q2
@@ -46,8 +47,8 @@ all: $(Q2_TARGET) $(Q3_TARGET)
 $(Q2_TARGET): $(Q2_OBJECTS)
 	$(CC) $(FLAGS) $(LIBRARIES) -o $@ $(Q2_OBJECTS)
 
-$(Q3_TARGET): $(Q3_OBJECTS)
-	$(CC) $(FLAGS) $(LIBRARIES) -o $@ $(Q3_OBJECTS)
+$(Q3_TARGET):
+	$(GCC) -fopenmp -std=c11 -o search $(SRC_DIR)/q3.c
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc | $(OBJ_DIR)
 	$(CC) $(FLAGS) $(LIBRARIES) -c -o $@ $<
