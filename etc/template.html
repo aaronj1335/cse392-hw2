@@ -62,15 +62,21 @@
           clear: both;
       }
 
+      .pseudocode {
+        white-space: pre-line;
+      }
+
     </style>
   </head>
   <body>
-    <div class=markdown>%(report)s</div>
+    <script type=x-markdown class=markdown-source>%(report)s</script>
+    <div class=markdown></div>
 
     <script>%(marked)s</script>
     <script>
       var md = document.querySelector('.markdown');
-      md.innerHTML = marked(md.innerHTML);
+      var mdText = document.querySelector('.markdown-source');
+      md.innerHTML = marked(mdText.innerHTML, {sanitize: false});
     </script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({

@@ -142,7 +142,48 @@
       <img class=chart src=weak_scaling.png />
     </p>
 
-3. Write up in cse392asab_q3.pdf
+3. OMP algorithm:
+
+        ompBSearch(....) {
+        //data size: n
+        //# threads: t
+        //key, arr[], id (0 to t-1)
+        size=ceil(n/t)
+        seg_start=id*size
+        // data size is less than number of threads available seg_end=(id+1)*size-1
+        if (seg_start>=n) return
+        // resolve boundary conditions
+        if (seg_end>=n || (id==t-1 && seg_end<n-1)) {
+        seg_end=n-1
+        size=seg_end-seg_start+1 }
+        // key is not in this block //search now
+        if (key<seg_start || key>seg_end) return NULL
+        seg_center=seg_start+size/2
+        // key not found if (seg_start <= key < seg_center)
+        if (seg_start==seg_end && seg_center != key) return NULL
+        ompBsearch(seg_start, size/2, key) else if (seg_center < key <= seg_finish)
+        ompBsearch(seg_center+1, size-size/2-1, key) else
+        return seg_center // Key found }
+
+  MPI algorithm
+
+  <div class=pseudocode>
+  mpiBsearch(....) {
+  // num procs = p
+  split array of size n in p chunks of n/p
+  MPI_Scatter each chunk to the procs in the group
+  Each processor runs ompBSearch(....) (shown above) and reports
+  - either NULL for key not found
+  - or the element that matched (only one because the array has no duplicates) Report result
+  }
+  The implementation is not complete and no performance numbers are available to report. The working code so far developed is included. It is the OMP part. The MPI code is not included because it is work in progress.
+  file:///Users/bhaduri/Documents/Coursework/UTexas/Spring2014/CSE_392/hw/hw2_src/q3/ompbsearchalgo 1/2
+  3/2/2014 ompbsearchalgo
+  The command accepts:
+  -n for array size
+  -k for key value (optional if not mentioned then a random key is used)
+  The program generates a sorted array of random unsigned integers. The search is applied on this array.
+  </div>
 
 4. PRAM pseudocode:
 
