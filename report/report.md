@@ -1,6 +1,6 @@
 ### Spring 2014, CSE 392, Homework 2
 
-#### Abhi Shekbhaduri and Aaron Stacy
+#### Abhishek Bhaduri and Aaron Stacy
 
 1. If we expand out the first several terms of the operation we get:
 
@@ -142,7 +142,7 @@
       <img class=chart src=weak_scaling.png />
     </p>
 
-3. TODO
+3. Write up in cse392asab_q3.pdf
 
 4. PRAM pseudocode:
 
